@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class TaskAdapter extends ArrayAdapter
@@ -37,11 +38,16 @@ public class TaskAdapter extends ArrayAdapter
         {
             output=inflater.inflate(R.layout.row_layout,parent,false);
             TextView titleTextView=output.findViewById(R.id.titleTextView);
+            TextView timeTextView=output.findViewById(R.id.timeTextView);
             TaskViewHolder viewHolder=new TaskViewHolder();
-//            titleTextView.setGravity(View.TEXT_ALIGNMENT_CENTER);
             titleTextView.setTextColor(Color.BLACK);
             titleTextView.setTextSize(20);
             titleTextView.setPadding(50,15,25,0);
+            timeTextView.setTextSize(15);
+            long date=System.currentTimeMillis();
+            SimpleDateFormat sdf=new SimpleDateFormat("h:mm a dd/MM/yyyy");
+            String dateString=sdf.format(date);
+            timeTextView.setText(dateString);
             viewHolder.title=titleTextView;
             output.setTag(viewHolder);
         }
