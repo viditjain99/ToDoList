@@ -32,16 +32,22 @@ public class TaskAdapter extends ArrayAdapter
     }
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        View output=inflater.inflate(R.layout.row_layout,parent,false);
-        TextView titleTextView=output.findViewById(R.id.titleTextView);
-        titleTextView.setGravity(View.TEXT_ALIGNMENT_CENTER);
-        titleTextView.setTextColor(Color.BLACK);
-        titleTextView.setTextSize(25);
-        titleTextView.setPadding(25,0,25,0);
-        //TextView descTextView=output.findViewById(R.id.descTextView);
+        View output=convertView;
+        if(output==null)
+        {
+            output=inflater.inflate(R.layout.row_layout,parent,false);
+            TextView titleTextView=output.findViewById(R.id.titleTextView);
+            TaskViewHolder viewHolder=new TaskViewHolder();
+//            titleTextView.setGravity(View.TEXT_ALIGNMENT_CENTER);
+            titleTextView.setTextColor(Color.BLACK);
+            titleTextView.setTextSize(20);
+            titleTextView.setPadding(50,15,25,0);
+            viewHolder.title=titleTextView;
+            output.setTag(viewHolder);
+        }
+        TaskViewHolder viewHolder=(TaskViewHolder) output.getTag();
         Task task=tasks.get(position);
-        titleTextView.setText(task.getTitle());
-        //descTextView.setText(task.getDescription());
+        viewHolder.title.setText(task.getTitle());
         return output;
     }
 }
