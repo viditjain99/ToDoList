@@ -21,16 +21,24 @@
         android:datePickerMode="spinner"
         android:calendarViewShown="false"
         android:layout_gravity="center"/>
+    <TimePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timePicker"
+        android:timePickerMode="spinner"
+        android:layout_gravity="center"/>
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/importantCheckBox"
         android:text="Mark As Important"
+        android:layout_marginBottom="6dp"
         android:layout_gravity="center"
         android:checked="false"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Save"
         android:onClick="saveTask"/>
 </LinearLayout>

@@ -10,5 +10,6 @@ public class Contract
         public static final String COLUMN_ID="id";
         public static final String COLUMN_DATE="date";
         public static final String COLUMN_IMPORTANT="important";
+        public static final String COLUMN_TIME="time";
     }
 }

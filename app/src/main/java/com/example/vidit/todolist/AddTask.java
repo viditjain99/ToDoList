@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -24,7 +25,10 @@ public class AddTask extends AppCompatActivity
     public static final String MONTH_KEY="month";
     public static final String YEAR_KEY="year";
     public static final String CHECKED_KEY="checked";
+    public static final String HOUR_KEY="hour";
+    public static final String MINUTE_KEY="minute";
     public DatePicker datePicker;
+    public TimePicker timePicker;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -35,6 +39,8 @@ public class AddTask extends AppCompatActivity
         datePicker=findViewById(R.id.datePicker);
         datePicker.setSpinnersShown(true);
         datePicker.setMinDate(System.currentTimeMillis()-1000);
+        timePicker=findViewById(R.id.timePicker);
+        timePicker.setIs24HourView(false);
     }
     public void saveTask(View view)
     {
@@ -46,6 +52,8 @@ public class AddTask extends AppCompatActivity
         String day=String.valueOf(datePicker.getDayOfMonth());
         String month=String.valueOf(datePicker.getMonth()+1);
         String year=String.valueOf(datePicker.getYear());
+        String hour=String.valueOf(timePicker.getHour());
+        String minute=String.valueOf(timePicker.getMinute());
         boolean flag=importantCheckBox.isChecked();
         Intent data=new Intent();
         data.putExtra(TITLE_KEY,title);
@@ -54,6 +62,8 @@ public class AddTask extends AppCompatActivity
         data.putExtra(MONTH_KEY,month);
         data.putExtra(YEAR_KEY,year);
         data.putExtra(CHECKED_KEY,flag);
+        data.putExtra(HOUR_KEY,hour);
+        data.putExtra(MINUTE_KEY,minute);
         setResult(ADD_RESULT_CODE,data);
         finish();
     }

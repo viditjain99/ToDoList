@@ -24,7 +24,7 @@ public class TaskOpenHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase)
     {
-        String taskSql="CREATE TABLE "+Contract.Task.TABLE_NAME+" ( "+Contract.Task.COLUMN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT , "+Contract.Task.COLUMN_TITLE+" TEXT , "+Contract.Task.COLUMN_DESC+" TEXT , "+Contract.Task.COLUMN_DATE+" TEXT , "+Contract.Task.COLUMN_IMPORTANT+" BOOLEAN )";
+        String taskSql="CREATE TABLE "+Contract.Task.TABLE_NAME+" ( "+Contract.Task.COLUMN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT , "+Contract.Task.COLUMN_TITLE+" TEXT , "+Contract.Task.COLUMN_DESC+" TEXT , "+Contract.Task.COLUMN_DATE+" TEXT , "+Contract.Task.COLUMN_IMPORTANT+" BOOLEAN , "+Contract.Task.COLUMN_TIME+" TEXT )";
         sqLiteDatabase.execSQL(taskSql);
     }
     @Override

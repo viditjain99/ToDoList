@@ -10,6 +10,9 @@ public class Task
     private String month;
     private String year;
     private boolean flag;
+    private String hour;
+    private String minute;
+    private String time;
 
     public Task(String title, String description,String date) {
         this.title=title;
@@ -84,5 +87,29 @@ public class Task
     public boolean getImportant()
     {
         return flag;
+    }
+    public String getHour()
+    {
+        return this.hour;
+    }
+    public void setHour(String hour)
+    {
+        this.hour=hour;
+    }
+    public String getMinute()
+    {
+        return this.minute;
+    }
+    public void setMinute(String minute)
+    {
+        this.minute=minute;
+    }
+    public void setTime(String time)
+    {
+        this.time=time;
+    }
+    public String getTime()
+    {
+        return time;
     }
 }

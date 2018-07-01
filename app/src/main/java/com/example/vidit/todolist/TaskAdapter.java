@@ -53,7 +53,7 @@ public class TaskAdapter extends ArrayAdapter
         }
         TaskViewHolder viewHolder=(TaskViewHolder) output.getTag();
         Task task=tasks.get(position);
-        viewHolder.date.setText(task.getDate());
+        viewHolder.date.setText(task.getTime()+'\n'+task.getDate());
         viewHolder.title.setText(task.getTitle());
         return output;
     }

@@ -42,10 +42,12 @@ public class ImportantTasks extends AppCompatActivity implements AdapterView.OnI
             long id=cursor.getLong(cursor.getColumnIndex(Contract.Task.COLUMN_ID));
             String date=cursor.getString(cursor.getColumnIndex(Contract.Task.COLUMN_DATE));
             String flag=cursor.getString(cursor.getColumnIndex(Contract.Task.COLUMN_IMPORTANT));
+            String time=cursor.getString(cursor.getColumnIndex(Contract.Task.COLUMN_TIME));
             Task task=new Task(title,desc,date);
             task.setId(id);
             task.setDate(date);
             task.setImportant(Boolean.parseBoolean(flag));
+            task.setTime(time);
             tasks.add(task);
         }
         adapter=new TaskAdapter(this,tasks);

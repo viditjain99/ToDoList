@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public static final String MONTH="month";
     public static final String YEAR="year";
     public static final String IMPORTANT="important";
+    public static final String HOUR="hour";
+    public static final String MINUTE="minute";
     ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +55,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             long id=cursor.getLong(cursor.getColumnIndex(Contract.Task.COLUMN_ID));
             String date=cursor.getString(cursor.getColumnIndex(Contract.Task.COLUMN_DATE));
             String flag=cursor.getString(cursor.getColumnIndex(Contract.Task.COLUMN_IMPORTANT));
+            String time=cursor.getString(cursor.getColumnIndex(Contract.Task.COLUMN_TIME));
             Task task=new Task(title,desc,date);
             task.setId(id);
             task.setDate(date);
+            task.setTime(time);
             task.setImportant(Boolean.parseBoolean(flag));
             tasks.add(task);
         }
@@ -163,6 +167,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 intent.putExtra(DAY,task.getDay());
                 intent.putExtra(MONTH,task.getMonth());
                 intent.putExtra(YEAR,task.getYear());
+                intent.putExtra(HOUR,task.getHour());
+                intent.putExtra(MINUTE,task.getMinute());
                 intent.putExtra(IMPORTANT,task.getImportant());
                 startActivityForResult(intent,EDIT_TASK_REQUEST_CODE);
             }
@@ -183,19 +189,25 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 String day=data.getStringExtra(AddTask.DAY_KEY);
                 String month=data.getStringExtra(AddTask.MONTH_KEY);
                 String year=data.getStringExtra(AddTask.YEAR_KEY);
+                String hour=data.getStringExtra(AddTask.HOUR_KEY);
+                String minute=data.getStringExtra(AddTask.MINUTE_KEY);
                 boolean flag=data.getBooleanExtra(AddTask.CHECKED_KEY,false);
                 String date=day+"/"+month+"/"+year;
+                String time=hour+":"+minute;
                 if(title.length()==0)
                 {
                     Toast.makeText(this,"Cannot Add Task",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Task task=new Task(title,desc,date);
+                task.setHour(hour);
+                task.setMinute(minute);
                 task.setDay(day);
                 task.setMonth(month);
                 task.setYear(year);
                 task.setDate(date);
                 task.setImportant(flag);
+                task.setTime(time);
                 TaskOpenHelper openHelper=TaskOpenHelper.getInstance(getApplicationContext());
                 SQLiteDatabase database=openHelper.getWritableDatabase();
                 ContentValues contentValues=new ContentValues();
@@ -203,7 +215,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 contentValues.put(Contract.Task.COLUMN_DESC,task.getDescription());
                 contentValues.put(Contract.Task.COLUMN_DATE,task.getDate());
                 contentValues.put(Contract.Task.COLUMN_IMPORTANT,task.getImportant());
-                database.insert(Contract.Task.TABLE_NAME,null,contentValues);
+                contentValues.put(Contract.Task.COLUMN_TIME,task.getTime());
+                long id=database.insert(Contract.Task.TABLE_NAME,null,contentValues);
+                if(id>-1L)
+                {
+                    task.setId(id);
+                }
                 tasks.add(task);
                 adapter.notifyDataSetChanged();
             }
@@ -218,8 +235,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 String day=data.getStringExtra(EditTask.EDIT_DAY);
                 String month=data.getStringExtra(EditTask.EDIT_MONTH);
                 String year=data.getStringExtra(EditTask.EDIT_YEAR);
+                String hour=data.getStringExtra(EditTask.EDIT_HOUR);
+                String minute=data.getStringExtra(EditTask.EDIT_MINUTE);
                 boolean flag=data.getBooleanExtra(EditTask.EDIT_CHECKED,false);
                 String date=day+"/"+month+"/"+year;
+                String time=hour+":"+minute;
                 if(title.length()==0)
                 {
                     Toast.makeText(this,"Cannot Edit Task",Toast.LENGTH_SHORT).show();
@@ -236,10 +256,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 ContentValues contentValues=new ContentValues();
                 task.setTitle(title);
                 task.setDescription(desc);
+                task.setMinute(minute);
+                task.setHour(hour);
+                task.setTime(time);
                 contentValues.put(Contract.Task.COLUMN_TITLE,task.getTitle());
                 contentValues.put(Contract.Task.COLUMN_DESC,task.getDescription());
                 contentValues.put(Contract.Task.COLUMN_DATE,task.getDate());
                 contentValues.put(Contract.Task.COLUMN_IMPORTANT,task.getImportant());
+                contentValues.put(Contract.Task.COLUMN_TIME,task.getTime());
                 long id=task.getId();
                 String[] selectionArgs={id+""};
                 database.update(Contract.Task.TABLE_NAME,contentValues,Contract.Task.COLUMN_ID+" = ?",selectionArgs);
