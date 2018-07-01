@@ -1,15 +1,18 @@
 package com.example.vidit.todolist;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class TaskAdapter extends ArrayAdapter
 {
@@ -38,21 +41,19 @@ public class TaskAdapter extends ArrayAdapter
         {
             output=inflater.inflate(R.layout.row_layout,parent,false);
             TextView titleTextView=output.findViewById(R.id.titleTextView);
-            TextView timeTextView=output.findViewById(R.id.timeTextView);
+            TextView dateTextView=output.findViewById(R.id.dateTextView);
             TaskViewHolder viewHolder=new TaskViewHolder();
             titleTextView.setTextColor(Color.BLACK);
             titleTextView.setTextSize(20);
             titleTextView.setPadding(50,15,25,0);
-            timeTextView.setTextSize(15);
-            long date=System.currentTimeMillis();
-            SimpleDateFormat sdf=new SimpleDateFormat("h:mm a dd/MM/yyyy");
-            String dateString=sdf.format(date);
-            timeTextView.setText(dateString);
+            dateTextView.setTextSize(15);
             viewHolder.title=titleTextView;
+            viewHolder.date=dateTextView;
             output.setTag(viewHolder);
         }
         TaskViewHolder viewHolder=(TaskViewHolder) output.getTag();
         Task task=tasks.get(position);
+        viewHolder.date.setText(task.getDate());
         viewHolder.title.setText(task.getTitle());
         return output;
     }

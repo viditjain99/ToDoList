@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/timeTextView"
+            android:id="@+id/dateTextView"
             android:layout_weight="1"
             android:text="date and time"/>
 

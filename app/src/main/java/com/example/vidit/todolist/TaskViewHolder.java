@@ -5,4 +5,5 @@ import android.widget.TextView;
 public class TaskViewHolder
 {
     TextView title;
+    TextView date;
 }

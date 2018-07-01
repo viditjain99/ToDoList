@@ -14,6 +14,20 @@
         android:layout_height="wrap_content"
         android:id="@+id/descEditText"
         android:hint="Description"/>
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/datePicker"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"
+        android:layout_gravity="center"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/importantCheckBox"
+        android:text="Mark As Important"
+        android:layout_gravity="center"
+        android:checked="false"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
