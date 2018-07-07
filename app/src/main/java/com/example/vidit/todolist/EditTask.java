@@ -1,8 +1,11 @@
 package com.example.vidit.todolist;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
@@ -10,22 +13,21 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class EditTask extends AppCompatActivity
 {
     public static int EDIT_RESULT_CODE=4;
     public static final String EDIT_TITLE="title";
     public static final String EDIT_DESC="desc";
     public static final String POSITION="pos";
-    public static final String EDIT_DAY="day";
-    public static final String EDIT_MONTH="month";
-    public static final String EDIT_YEAR="year";
     public static final String EDIT_CHECKED="important";
-    public static final String EDIT_HOUR="hour";
-    public static final String EDIT_MINUTE="minute";
-    public DatePicker datePicker;
-    public TimePicker timePicker;
+    public static final String EDIT_DATE="date";
+    public static final String EDIT_TIME="time";
     Intent intent;
-    EditText titleEditText,descEditText;
+    EditText titleEditText,descEditText,dateEditText,timeEditText;
     CheckBox importantCheckBox;
     String position;
     @Override
@@ -36,53 +38,82 @@ public class EditTask extends AppCompatActivity
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setTitle("Edit Task");
         intent=getIntent();
-        datePicker=findViewById(R.id.datePicker);
-        datePicker.setSpinnersShown(true);
-        datePicker.setMinDate(System.currentTimeMillis()-1000);
-        timePicker=findViewById(R.id.timePicker);
         titleEditText=findViewById(R.id.titleEditText);
         descEditText=findViewById(R.id.descEditText);
+        dateEditText=findViewById(R.id.dateEditText);
+        timeEditText=findViewById(R.id.timeEditText);
         importantCheckBox=findViewById(R.id.importantCheckBox);
         importantCheckBox.setChecked(intent.getBooleanExtra(MainActivity.IMPORTANT,false));
         titleEditText.setText(intent.getStringExtra(MainActivity.TITLE));
         descEditText.setText(intent.getStringExtra(MainActivity.DESC));
-        String monthString=intent.getStringExtra(MainActivity.MONTH);
-        String yearString=intent.getStringExtra(MainActivity.YEAR);
-        String dayString=intent.getStringExtra(MainActivity.DAY);
-        String hourString=intent.getStringExtra(MainActivity.HOUR);
-        String minuteString=intent.getStringExtra(MainActivity.MINUTE);
-        if(monthString!=null && yearString!=null && dayString!=null)
-        {
-            int month=Integer.parseInt(monthString);
-            int day=Integer.parseInt(dayString);
-            int year=Integer.parseInt(yearString);
-            datePicker.updateDate(year,month,day);
-            timePicker.setHour(Integer.parseInt(hourString));
-            timePicker.setMinute(Integer.parseInt(minuteString));
-            timePicker.setIs24HourView(false);
-        }
+        dateEditText.setText(intent.getStringExtra(MainActivity.DATE));
+        timeEditText.setText(intent.getStringExtra(MainActivity.TIME));
+        final Calendar calendar=Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date=new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day)
+            {
+                calendar.set(Calendar.YEAR,year);
+                calendar.set(Calendar.MONTH,month);
+                calendar.set(Calendar.DAY_OF_MONTH,day);
+                String format="dd/MM/yy";
+                SimpleDateFormat sdf=new SimpleDateFormat(format, Locale.ENGLISH);
+                dateEditText.setText(sdf.format(calendar.getTime()));
+            }
+        };
+        timeEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int hour=calendar.get(Calendar.HOUR_OF_DAY);
+                int minute=calendar.get(Calendar.MINUTE);
+                TimePickerDialog timePickerDialog;
+                timePickerDialog=new TimePickerDialog(EditTask.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                        String HOUR=String.valueOf(hour);
+                        String MINUTE=String.valueOf(minute);
+                        if(hour==0)
+                        {
+                            HOUR=hour+"0";
+                        }
+                        if(minute==0)
+                        {
+                            MINUTE=minute+"0";
+                        }
+                        timeEditText.setText(HOUR + ":" + MINUTE);
+                    }
+                },hour,minute,false);
+                timePickerDialog.show();
+            }
+        });
+        dateEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                new DatePickerDialog(EditTask.this,date,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
         position=intent.getStringExtra(MainActivity.POS);
     }
     public void saveTask(View view)
     {
         String title=titleEditText.getText().toString();
         String desc=descEditText.getText().toString();
-        String day=String.valueOf(datePicker.getDayOfMonth());
-        String month=String.valueOf(datePicker.getMonth()+1);
-        String year=String.valueOf(datePicker.getYear());
+        String date=dateEditText.getText().toString();
+        String time=timeEditText.getText().toString();
         boolean flag=importantCheckBox.isChecked();
-        String hour=String.valueOf(timePicker.getHour());
-        String minute=String.valueOf(timePicker.getMinute());
+        if(date.length()==0 || time.length()==0 || title.length()==0)
+        {
+            Snackbar.make(view,"Please Enter the details",Snackbar.LENGTH_LONG).show();
+            return;
+        }
         Intent editData=new Intent();
         editData.putExtra(EDIT_TITLE,title);
         editData.putExtra(EDIT_DESC,desc);
         editData.putExtra(POSITION,position);
-        editData.putExtra(EDIT_DAY,day);
-        editData.putExtra(EDIT_MONTH,month);
-        editData.putExtra(EDIT_YEAR,year);
         editData.putExtra(EDIT_CHECKED,flag);
-        editData.putExtra(EDIT_HOUR,hour);
-        editData.putExtra(EDIT_MINUTE,minute);
+        editData.putExtra(EDIT_DATE,date);
+        editData.putExtra(EDIT_TIME,time);
         setResult(EDIT_RESULT_CODE,editData);
         finish();
     }

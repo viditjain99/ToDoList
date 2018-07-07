@@ -4,18 +4,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="What is to be done?"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="5dp"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:singleLine="true"
         android:id="@+id/titleEditText"
+        android:layout_marginLeft="5dp"
         android:hint="Title"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/descEditText"
         android:layout_marginTop="16dp"
+        android:layout_marginLeft="5dp"
         android:hint="Description"/>
-    <DatePicker
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="Due Date"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:id="@+id/dateEditText"
+        android:layout_marginLeft="5dp"
+        android:focusable="false"
+        android:hint="Date"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:id="@+id/timeEditText"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="16dp"
+        android:focusable="false"
+        android:hint="Time"/>
+    <!--<DatePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/datePicker"
@@ -27,12 +59,13 @@
         android:layout_height="wrap_content"
         android:id="@+id/timePicker"
         android:timePickerMode="spinner"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"/>-->
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/importantCheckBox"
         android:layout_marginBottom="6dp"
+        android:layout_marginTop="16dp"
         android:text="Mark As Important"
         android:layout_gravity="center"
         android:checked="false"/>

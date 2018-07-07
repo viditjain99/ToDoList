@@ -6,12 +6,7 @@ public class Task
     private String description;
     private long id;
     private String date;
-    private String day;
-    private String month;
-    private String year;
     private boolean flag;
-    private String hour;
-    private String minute;
     private String time;
 
     public Task(String title, String description,String date) {
@@ -56,30 +51,6 @@ public class Task
     {
         this.date=date;
     }
-    public void setDay(String day)
-    {
-        this.day=day;
-    }
-    public String getDay()
-    {
-        return day;
-    }
-    public void setMonth(String month)
-    {
-        this.month=month;
-    }
-    public String getMonth()
-    {
-        return month;
-    }
-    public void setYear(String year)
-    {
-        this.year=year;
-    }
-    public String getYear()
-    {
-        return year;
-    }
     public void setImportant(boolean flag)
     {
         this.flag=flag;
@@ -87,22 +58,6 @@ public class Task
     public boolean getImportant()
     {
         return flag;
-    }
-    public String getHour()
-    {
-        return this.hour;
-    }
-    public void setHour(String hour)
-    {
-        this.hour=hour;
-    }
-    public String getMinute()
-    {
-        return this.minute;
-    }
-    public void setMinute(String minute)
-    {
-        this.minute=minute;
     }
     public void setTime(String time)
     {

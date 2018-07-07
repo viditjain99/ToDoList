@@ -7,8 +7,16 @@
         android:id="@+id/importantTasks"
         app:showAsAction="always"
         android:icon="@drawable/important_tasks"/>
-    <item android:title="Add"
-        android:id="@+id/addtask"
-        app:showAsAction="always"
-        android:icon="@drawable/plus"/>
+    <item android:title="Settings"
+        android:id="@+id/settings"
+        android:icon="@drawable/settings"
+        app:showAsAction="always">
+        <menu>
+            <group android:id="@+id/submenu"
+                android:checkableBehavior="all">
+                <item android:title="Allow access to messages"
+                    android:id="@+id/access"/>
+            </group>
+        </menu>
+    </item>
 </menu>

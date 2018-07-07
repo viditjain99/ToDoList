@@ -53,8 +53,18 @@ public class TaskAdapter extends ArrayAdapter
         }
         TaskViewHolder viewHolder=(TaskViewHolder) output.getTag();
         Task task=tasks.get(position);
-        viewHolder.date.setText(task.getTime()+'\n'+task.getDate());
-        viewHolder.title.setText(task.getTitle());
+        String[] Time=task.getTime().split(":");
+        String hour=Time[0];
+        if(Integer.parseInt(hour)>12)
+        {
+            viewHolder.date.setText(task.getTime()+" PM"+'\n'+task.getDate());
+            viewHolder.title.setText(task.getTitle());
+        }
+        else
+        {
+            viewHolder.date.setText(task.getTime()+" AM"+'\n'+task.getDate());
+            viewHolder.title.setText(task.getTitle());
+        }
         return output;
     }
 }
