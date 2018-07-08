@@ -240,6 +240,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 String desc=data.getStringExtra(AddTask.DESC_KEY);
                 String date=data.getStringExtra(AddTask.DATE_KEY);
                 String time=data.getStringExtra(AddTask.TIME_KEY);
+                String[] Time=time.split(":");
+                String minute=Time[1];
+                String hour=Time[0];
+                if(minute.length()==1)
+                {
+                    minute="0"+minute;
+                }
+                time=hour+":"+minute;
                 boolean flag=data.getBooleanExtra(AddTask.CHECKED_KEY,false);
                 if(title.length()==0)
                 {
@@ -276,9 +284,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 String month=Date[1];
                 String year=Date[2];
                 year="20"+year;
-                String[] Time=time.split(":");
-                String hour=Time[0];
-                String minute=Time[1];
+                Time=time.split(":");
+                hour=Time[0];
+                minute=Time[1];
                 calendar.set(Integer.parseInt(year),Integer.parseInt(month)-1,Integer.parseInt(day),Integer.parseInt(hour),Integer.parseInt(minute));
                 long currentTime=calendar.getTimeInMillis();
                 alarmManager.set(AlarmManager.RTC_WAKEUP,currentTime,pendingIntent);
@@ -293,6 +301,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 String pos=data.getStringExtra(EditTask.POSITION);
                 String date=data.getStringExtra(EditTask.EDIT_DATE);
                 String time=data.getStringExtra(EditTask.EDIT_TIME);
+                String[] Time=time.split(":");
+                String minute=Time[1];
+                String hour=Time[0];
+                if(minute.length()==1)
+                {
+                    minute="0"+minute;
+                }
+                time=hour+":"+minute;
                 boolean flag=data.getBooleanExtra(EditTask.EDIT_CHECKED,false);
                 if(title.length()==0)
                 {
@@ -328,9 +344,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 String month=Date[1];
                 String year=Date[2];
                 year="20"+year;
-                String[] Time=time.split(":");
-                String hour=Time[0];
-                String minute=Time[1];
+                Time=time.split(":");
+                hour=Time[0];
+                minute=Time[1];
                 calendar.set(Integer.parseInt(year),Integer.parseInt(month)-1,Integer.parseInt(day),Integer.parseInt(hour),Integer.parseInt(minute));
                 long currentTime=calendar.getTimeInMillis();
                 alarmManager.set(AlarmManager.RTC_WAKEUP,currentTime,pendingIntent);

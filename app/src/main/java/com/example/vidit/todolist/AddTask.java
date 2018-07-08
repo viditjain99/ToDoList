@@ -79,9 +79,9 @@ public class AddTask extends AppCompatActivity {
                         {
                             HOUR=hour+"0";
                         }
-                        if(minute==0)
+                        if(minute==0 || minute<10)
                         {
-                            MINUTE=minute+"0";
+                            MINUTE="0"+minute;
                         }
                         timeEditText.setText(HOUR + ":" + MINUTE);
                     }

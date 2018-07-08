@@ -6,6 +6,8 @@
     <item android:title="Important Tasks"
         android:id="@+id/importantTasks"
         app:showAsAction="always"
+        android:iconTint="#FFFFFF"
+        android:iconTintMode="src_atop"
         android:icon="@drawable/important_tasks"/>
     <item android:title="Settings"
         android:id="@+id/settings"
