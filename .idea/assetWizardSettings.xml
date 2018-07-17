@@ -18,23 +18,12 @@
                                 <PersistentState>
                                   <option name="children">
                                     <map>
-                                      <entry key="clipArt">
-                                        <value>
-                                          <PersistentState>
-                                            <option name="values">
-                                              <map>
-                                                <entry key="paddingPercent" value="-6" />
-                                              </map>
-                                            </option>
-                                          </PersistentState>
-                                        </value>
-                                      </entry>
                                       <entry key="clipartAsset">
                                         <value>
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_assignment_late_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/device/ic_access_alarm_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -44,9 +33,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="important_tasks" />
+                                      <entry key="outputName" value="alarm" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="ffffff" />
+                                      <entry key="themeColor" value="005fff" />
                                     </map>
                                   </option>
                                 </PersistentState>

@@ -13,12 +13,5 @@
         android:id="@+id/settings"
         android:icon="@drawable/settings"
         app:showAsAction="always">
-        <menu>
-            <group android:id="@+id/submenu"
-                android:checkableBehavior="all">
-                <item android:title="Allow access to messages"
-                    android:id="@+id/access"/>
-            </group>
-        </menu>
     </item>
 </menu>

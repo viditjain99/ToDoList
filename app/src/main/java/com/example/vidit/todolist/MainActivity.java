@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -46,6 +47,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public static final String DATE="date";
     public static final String TIME="time";
     public static final String IMPORTANT="important";
+    public static final int REQUEST_CODE=10;
+    public int importantTaskCount=0;
+    public boolean important;
+    public CoordinatorLayout rootLayout;
     ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -54,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
         listView=findViewById(R.id.taskList);
         FloatingActionButton fab=findViewById(R.id.fab);
+        rootLayout=findViewById(R.id.rootLayout);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         TaskOpenHelper openHelper=TaskOpenHelper.getInstance(getApplicationContext());
         SQLiteDatabase database=openHelper.getReadableDatabase();
@@ -73,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             task.setImportant(Boolean.parseBoolean(flag));
             tasks.add(task);
         }
+
         adapter=new TaskAdapter(this,tasks);
         listView.setAdapter(adapter);
         listView.setOnItemLongClickListener(this);
@@ -86,42 +93,46 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 startActivityForResult(intent,ADD_TASK_REQUEST_CODE);
             }
         });
-//        final SmsManager manager=SmsManager.getDefault();
-//        BroadcastReceiver receiver=new BroadcastReceiver()
-//        {
-//            @Override
-//            public void onReceive(Context context, Intent intent)
-//            {
-//                if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED"))
-//                {
-//                    Bundle bundle = intent.getExtras();
-//                    SmsMessage[] msgs=null;
-//                    if (bundle != null) {
-//                        try
-//                        {
-//                            Object[] pdus = (Object[]) bundle.get("pdus");
-//                            msgs = new SmsMessage[pdus.length];
-//                            for (int i = 0; i < msgs.length; i++)
-//                            {
-//                                msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-//                                String msgBody = msgs[i].getMessageBody();
-//                                Intent intent1=new Intent();
-//                                intent1.setAction(Intent.ACTION_SEND);
-//                                intent1.setType("text/plain");
-//                                intent1.putExtra(Intent.EXTRA_TEXT,msgBody);
-//                                startActivity(intent1);
-//                            }
-//                        }
-//                        catch (Exception e)
-//                        {
-//                            //
-//                        }
-//                    }
-//                }
-//            }
-//        };
-//        IntentFilter intentFilter=new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-//        registerReceiver(receiver,intentFilter);
+        if(tasks.size()==0)
+        {
+            rootLayout.setBackgroundResource(R.drawable.back);
+        }
+        final SmsManager manager=SmsManager.getDefault();
+        BroadcastReceiver receiver=new BroadcastReceiver()
+        {
+            @Override
+            public void onReceive(Context context, Intent intent)
+            {
+                if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED"))
+                {
+                    Bundle bundle = intent.getExtras();
+                    SmsMessage[] msgs=null;
+                    if (bundle != null) {
+                        try
+                        {
+                            Object[] pdus = (Object[]) bundle.get("pdus");
+                            msgs = new SmsMessage[pdus.length];
+                            for (int i = 0; i < msgs.length; i++)
+                            {
+                                msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
+                                String msgBody = msgs[i].getMessageBody();
+                                Intent intent1=new Intent();
+                                intent1.setAction(Intent.ACTION_SEND);
+                                intent1.setType("text/plain");
+                                intent1.putExtra(Intent.EXTRA_TEXT,msgBody);
+                                startActivity(intent1);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            //
+                        }
+                    }
+                }
+            }
+        };
+        IntentFilter intentFilter=new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+        registerReceiver(receiver,intentFilter);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -136,7 +147,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if(id==R.id.importantTasks)
         {
             Intent intent=new Intent(this,ImportantTasks.class);
+            intent.putExtra("Count",importantTaskCount);
             startActivity(intent);
+        }
+        else if(id==R.id.settings)
+        {
+            startActivity(new Intent(this,SettingsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -154,12 +170,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 TaskOpenHelper openHelper=TaskOpenHelper.getInstance(getApplicationContext());
                 SQLiteDatabase database=openHelper.getWritableDatabase();
                 long id=task.getId();
+                if(task.getImportant()==true)
+                {
+                    importantTaskCount--;
+                }
                 String[] selectionArgs={id+""};
                 ContentValues contentValues=new ContentValues();
                 contentValues.put(Contract.Task.COLUMN_IMPORTANT,false);
                 database.update(Contract.Task.TABLE_NAME,contentValues,Contract.Task.COLUMN_ID+" = ?",selectionArgs);
                 database.delete(Contract.Task.TABLE_NAME,Contract.Task.COLUMN_ID+" = ?",selectionArgs);
                 tasks.remove(position);
+                if(tasks.size()==0)
+                {
+                    rootLayout.setBackgroundResource(R.drawable.back);
+                }
                 AlarmManager alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
                 Intent intent=new Intent(MainActivity.this,MyReciever.class);
                 intent.putExtra("TITLE_N",task.getTitle());
@@ -222,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 intent.putExtra(DATE,task.getDate());
                 intent.putExtra(TIME,task.getTime());
                 intent.putExtra(IMPORTANT,task.getImportant());
+                important=task.getImportant();
                 startActivityForResult(intent,EDIT_TASK_REQUEST_CODE);
             }
         });
@@ -249,6 +274,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
                 time=hour+":"+minute;
                 boolean flag=data.getBooleanExtra(AddTask.CHECKED_KEY,false);
+                if(flag==true)
+                {
+                    importantTaskCount++;
+                }
                 if(title.length()==0)
                 {
                     Snackbar.make(listView,"Cannot Add Task",Snackbar.LENGTH_LONG).show();
@@ -272,6 +301,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     task.setId(id);
                 }
                 tasks.add(task);
+                if(tasks.size()>0)
+                {
+                    rootLayout.setBackgroundResource(R.drawable.white_back);
+                }
                 adapter.notifyDataSetChanged();
                 AlarmManager alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
                 Intent intent=new Intent(this,MyReciever.class);
@@ -324,6 +357,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 task.setTitle(title);
                 task.setDescription(desc);
                 task.setTime(time);
+                if(important==true && flag==false)
+                {
+                    importantTaskCount--;
+                }
+                else if(important==false && flag==true)
+                {
+                    importantTaskCount++;
+                }
                 contentValues.put(Contract.Task.COLUMN_TITLE,task.getTitle());
                 contentValues.put(Contract.Task.COLUMN_DESC,task.getDescription());
                 contentValues.put(Contract.Task.COLUMN_DATE,task.getDate());

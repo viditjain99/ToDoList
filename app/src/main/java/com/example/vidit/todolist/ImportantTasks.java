@@ -24,11 +24,20 @@ public class ImportantTasks extends AppCompatActivity implements AdapterView.OnI
     ListView importantTasks;
     TaskAdapter adapter;
     ArrayList<Task> tasks=new ArrayList<>();
+    Intent intent;
+    LinearLayout importantTasksLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_important_task);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        importantTasksLayout=findViewById(R.id.importantTaskLayout);
+        intent=getIntent();
+        int count=intent.getIntExtra("Count",0);
+        if(count==0)
+        {
+            importantTasksLayout.setBackgroundResource(R.drawable.important_back_2);
+        }
         setTitle("Important Tasks");
         importantTasks=findViewById(R.id.importantTasksList);
         TaskOpenHelper openHelper=TaskOpenHelper.getInstance(getApplicationContext());
@@ -88,5 +97,10 @@ public class ImportantTasks extends AppCompatActivity implements AdapterView.OnI
         });
         AlertDialog dialog=builder.create();
         dialog.show();
+    }
+    @Override
+    public void onBackPressed()
+    {
+        finish();
     }
 }
