@@ -160,7 +160,7 @@ public class AddTask extends AppCompatActivity {
                 task.setId(id);
             }
             MainActivity.tasks.add(task);
-            adapter.notifyDataSetChanged();
+            MainActivity.adapter.notifyDataSetChanged();
             AlarmManager alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
             Intent intent=new Intent(this,MyReciever.class);
             intent.putExtra("TITLE_N",title);

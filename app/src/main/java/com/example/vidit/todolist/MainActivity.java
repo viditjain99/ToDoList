@@ -38,7 +38,7 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener,AdapterView.OnItemClickListener{
 
     public static ArrayList<Task> tasks=new ArrayList<>();
-    public TaskAdapter adapter;
+    public static TaskAdapter adapter;
     public static int ADD_TASK_REQUEST_CODE=1;
     public static int EDIT_TASK_REQUEST_CODE=3;
     public static final String TITLE="title";
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public static final int REQUEST_CODE=10;
     public int importantTaskCount=0;
     public boolean important;
-    public CoordinatorLayout rootLayout;
+    public static CoordinatorLayout rootLayout;
     ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         listView=findViewById(R.id.taskList);
+        tasks.clear();
         FloatingActionButton fab=findViewById(R.id.fab);
         rootLayout=findViewById(R.id.rootLayout);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -97,42 +98,42 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         {
             rootLayout.setBackgroundResource(R.drawable.back);
         }
-        final SmsManager manager=SmsManager.getDefault();
-        BroadcastReceiver receiver=new BroadcastReceiver()
-        {
-            @Override
-            public void onReceive(Context context, Intent intent)
-            {
-                if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED"))
-                {
-                    Bundle bundle = intent.getExtras();
-                    SmsMessage[] msgs=null;
-                    if (bundle != null) {
-                        try
-                        {
-                            Object[] pdus = (Object[]) bundle.get("pdus");
-                            msgs = new SmsMessage[pdus.length];
-                            for (int i = 0; i < msgs.length; i++)
-                            {
-                                msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-                                String msgBody = msgs[i].getMessageBody();
-                                Intent intent1=new Intent();
-                                intent1.setAction(Intent.ACTION_SEND);
-                                intent1.setType("text/plain");
-                                intent1.putExtra(Intent.EXTRA_TEXT,msgBody);
-                                startActivity(intent1);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            //
-                        }
-                    }
-                }
-            }
-        };
-        IntentFilter intentFilter=new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-        registerReceiver(receiver,intentFilter);
+//        final SmsManager manager=SmsManager.getDefault();
+//        BroadcastReceiver receiver=new BroadcastReceiver()
+//        {
+//            @Override
+//            public void onReceive(Context context, Intent intent)
+//            {
+//                if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED"))
+//                {
+//                    Bundle bundle = intent.getExtras();
+//                    SmsMessage[] msgs=null;
+//                    if (bundle != null) {
+//                        try
+//                        {
+//                            Object[] pdus = (Object[]) bundle.get("pdus");
+//                            msgs = new SmsMessage[pdus.length];
+//                            for (int i = 0; i < msgs.length; i++)
+//                            {
+//                                msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
+//                                String msgBody = msgs[i].getMessageBody();
+//                                Intent intent1=new Intent();
+//                                intent1.setAction(Intent.ACTION_SEND);
+//                                intent1.setType("text/plain");
+//                                intent1.putExtra(Intent.EXTRA_TEXT,msgBody);
+//                                startActivity(intent1);
+//                            }
+//                        }
+//                        catch (Exception e)
+//                        {
+//                            //
+//                        }
+//                    }
+//                }
+//            }
+//        };
+//        IntentFilter intentFilter=new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+//        registerReceiver(receiver,intentFilter);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
